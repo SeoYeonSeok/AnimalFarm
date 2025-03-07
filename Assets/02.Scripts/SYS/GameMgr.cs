@@ -9,6 +9,8 @@ public class GameMgr : MonoBehaviour
 {
     [Header("UI")]
     public GameObject[] panels; // 0 - EggBG, 1 - Timer, 2 - InField
+    public GameObject sideUIOnBtn;
+    public GameObject sideUIOffBtn;
 
     [Header("Main Camera")]
     public Camera mainCam;
@@ -36,6 +38,12 @@ public class GameMgr : MonoBehaviour
     public MMFeedbacks hatchParticle;
     public MMFeedbacks hatchRotate;
     public MMFeedbacks fieldScale;
+    public MMFeedbacks ui_SideFeedback_On;
+    public MMFeedbacks ui_SideFeedback_Off;
+    public MMFeedbacks ui_MissionFeedback_On;
+    public MMFeedbacks ui_MissionFeedback_Off;
+    public MMFeedbacks ui_ProfileFeedback_On;
+    public MMFeedbacks ui_ProfileFeedback_Off;
 
     [Header("Focus Mode")]
     public Image focusColorImg;
@@ -111,7 +119,8 @@ public class GameMgr : MonoBehaviour
 
     private void DisableAllUI()
     {
-        for (int i = 0; i < panels.Length; i++) panels[i].SetActive(false);
+        //for (int i = 0; i < panels.Length; i++) panels[i].SetActive(false);
+        for (int i = 0; i < 4; i++) panels[i].SetActive(false);
     }
 
     private void TurnUI(int flag)
@@ -261,5 +270,51 @@ public class GameMgr : MonoBehaviour
         else currentCoin -= value;
 
         currentCoinText.text = currentCoin.ToString();
+    }
+
+    public void OnOffSideUI(bool flag)
+    {
+        if (flag == true)
+        {
+            ui_SideFeedback_On.PlayFeedbacks();
+            sideUIOffBtn.SetActive(true);
+        }
+        else 
+        { 
+            ui_SideFeedback_Off.PlayFeedbacks();
+            sideUIOffBtn.SetActive(false);
+        }
+    }
+
+    public void OnOffMissionUI(bool flag)
+    {
+        if (flag == true)
+        {
+            ui_MissionFeedback_On.PlayFeedbacks();
+            OnOffSideUI(false);
+            sideUIOnBtn.SetActive(false);
+        }
+        else
+        {
+            ui_MissionFeedback_Off.PlayFeedbacks();
+            sideUIOnBtn.SetActive(true);
+            sideUIOffBtn.SetActive(false);
+        }
+    }
+
+    public void OnOffProfileUI(bool flag)
+    {
+        if (flag == true)
+        {
+            ui_ProfileFeedback_On.PlayFeedbacks();
+            OnOffSideUI(false);
+            sideUIOnBtn.SetActive(false);
+        }
+        else
+        {
+            ui_ProfileFeedback_Off.PlayFeedbacks();
+            sideUIOnBtn.SetActive(true);
+            sideUIOffBtn.SetActive(false);
+        }
     }
 }
