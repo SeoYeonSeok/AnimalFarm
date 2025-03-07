@@ -121,10 +121,12 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
             gameMgr.RemadeEgg();
             gameMgr.DoIdleEggs(true);
             gameMgr.SaveMinutes((int)Mathf.FloorToInt(currentTime / 60));
+            gameMgr.sideUIOnBtn.SetActive(false);
             debugBtn.SetActive(true);            
         }
         else
         {
+            gameMgr.sideUIOnBtn.SetActive(true);
             EndTimer(true);
         }        
     }
@@ -132,9 +134,16 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
     private void DisableObjsWhileTimer(bool flag)
     {
         if (flag == true)
+            objsDisableTimer[0].SetActive(false);
+        else
+            objsDisableTimer[0].SetActive(true);
+
+        /*
+        if (flag == true)
             for (int i = 0; i < objsDisableTimer.Length; i++) objsDisableTimer[i].SetActive(false);
         else
             for (int i = 0; i < objsDisableTimer.Length; i++) objsDisableTimer[i].SetActive(true);
+        */
     }
 
     private IEnumerator TimerCountdown()
