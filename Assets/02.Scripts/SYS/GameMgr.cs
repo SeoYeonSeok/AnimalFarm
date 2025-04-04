@@ -20,12 +20,14 @@ public class GameMgr : MonoBehaviour
     [Header("Eggs Elements")]
     private int currAnimal;
     public GameObject egg;
+    public GameObject egg_2D;
     public GameObject[] animals;
     public TextMeshProUGUI ment;
     public GameObject animal;
 
     [Header("Eggs & Animal's Animator Controller (Can Replaced to FEEL or Something Maybe?)")]
     public Animator animator_Eggs; // 0 - Idle, 1 - Shake
+    public Animator animator_Eggs_2D; // 0 - Idle, 1 - Shake
     public Animator[] animator_Animals;
 
     [Header("FarmMgr")]
@@ -57,7 +59,10 @@ public class GameMgr : MonoBehaviour
 
     private void Start()
     {
-        egg.SetActive(true);
+        //egg.SetActive(true);
+        //animator_Eggs = egg.transform.GetComponent<Animator>();
+        egg_2D.SetActive(true);
+        animator_Eggs_2D = egg_2D.transform.GetComponent<Animator>();
     }
 
     public void Debug_ChngTime()
@@ -148,7 +153,8 @@ public class GameMgr : MonoBehaviour
 
     public void EggChng(int animalNum)
     {
-        egg.SetActive(false);
+        //egg.SetActive(false);
+        egg_2D.SetActive(false);
 
         if (animalNum == 0)
         {
@@ -169,20 +175,24 @@ public class GameMgr : MonoBehaviour
         if (animals[currAnimal].activeSelf == true)
         {
             animals[currAnimal].SetActive(false);
-            egg.SetActive(true);
+            //egg.SetActive(true);
+            egg_2D.SetActive(true);
         }
         hatchRotate.StopFeedbacks();
     }
 
     public void DoIdleEggs(bool status)
     {
-        egg.transform.rotation = Quaternion.identity;
-        animator_Eggs.SetBool("Idle", status);
+        //egg.transform.rotation = Quaternion.identity;
+        //animator_Eggs.SetBool("Idle", status);
+        egg_2D.transform.rotation = Quaternion.identity;
+        animator_Eggs_2D.SetBool("Idle", status);
     }
 
     public void DoShakeEggs(bool status)
     {
-        animator_Eggs.SetBool("Shake", status);
+        //animator_Eggs.SetBool("Shake", status);
+        animator_Eggs_2D.SetBool("Shake", status);
     }
 
     public void CatchNewAnimals()
