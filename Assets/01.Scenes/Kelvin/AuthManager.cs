@@ -64,7 +64,6 @@ public class AuthManager : MonoBehaviour
         StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
     }
 
-    // if this shit's wrong chatGPT parsed it wrong
     private IEnumerator Login(string _email, string _password)
     {
         // Call the Firebase auth signin function passing the email and password
