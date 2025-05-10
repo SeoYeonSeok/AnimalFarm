@@ -14,6 +14,9 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
     public TextMeshProUGUI valueText;
     public Image fillImage;
     public Button startButton;
+    public Button startButton2;
+    public Button inventoryBtn;
+    public Button missionsBtn;
     public TextMeshProUGUI btnText;
     public GameObject[] objsDisableTimer;
 
@@ -27,6 +30,9 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
     private bool under10Min = false;
 
     private Coroutine corou_Timer;
+
+    [Header("Horizontal Timer Bar")]
+    public Slider timerProgressBar;
 
     [Header("Other Scripts")]
     public GameMgr gameMgr;
@@ -100,7 +106,7 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
     }
 
 
-    private void UpdateValueText()
+    public void UpdateValueText()
     {
         int minutes = Mathf.FloorToInt(currentTime / 60);
         int seconds = Mathf.FloorToInt(currentTime % 60);
@@ -110,7 +116,9 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
     }
 
     public void ActivateTimer()
-    {        
+    {
+        SetTimerBar(); // Timer Progress Bar Code
+
         if (!isTimerActive)
         {            
             DisableObjsWhileTimer(true);
@@ -122,13 +130,17 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
             gameMgr.DoIdleEggs(true);
             gameMgr.SaveMinutes((int)Mathf.FloorToInt(currentTime / 60));
             gameMgr.sideUIOnBtn.SetActive(false);
-            debugBtn.SetActive(true);            
+            debugBtn.SetActive(true);
+
+            TimerBarAndButtonControl(true);
         }
         else
         {
             gameMgr.sideUIOnBtn.SetActive(true);
             EndTimer(true);
-        }        
+
+            TimerBarAndButtonControl(false);
+        }
     }
 
     private void DisableObjsWhileTimer(bool flag)
@@ -153,6 +165,9 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
         {
             yield return new WaitForSeconds(1);
             currentTime--;
+
+            UpdateTimerBar(); // Timer Progress Bar
+
             if (under10Min == false) CheckTime();
             UpdateValueText();
             fillImage.fillAmount = (currentTime / 60f) / maxTime;            
@@ -161,14 +176,18 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     private void TimerTextChng()
     {
+        /*
         if (btnText.text == "Timer Start") btnText.text = "Timer end";
         else btnText.text = "Timer Start";
+        */
     }
 
     private void EndTimer(bool flag)
     {
         // 타이머 상태 초기화
         isTimerActive = false;
+
+        TimerBarAndButtonControl(false);
 
         if (corou_Timer != null)
         {
@@ -222,5 +241,59 @@ public class CircularSlider : MonoBehaviour, IDragHandler, IPointerDownHandler
             under10Min = true;
             gameMgr.DoShakeEggs(true);
         }
+    }
+
+    private void TimerBarAndButtonControl(bool flag)
+    {
+        if (flag == true)
+        {
+            startButton.gameObject.SetActive(false); // Timer Progress Bar Code
+            startButton2.gameObject.SetActive(true);
+            timerProgressBar.gameObject.SetActive(true);
+            inventoryBtn.gameObject.SetActive(false);
+            missionsBtn.gameObject.SetActive(false);
+        }
+        else
+        {
+            startButton.gameObject.SetActive(true); // Timer Progress Bar Code
+            startButton2.gameObject.SetActive(false);
+            timerProgressBar.gameObject.SetActive(false);
+            inventoryBtn.gameObject.SetActive(true);
+            missionsBtn.gameObject.SetActive(true);
+        }
+    }
+
+    public void PressPlusBtn()
+    {
+        if (currentTime < 7200) currentTime += 60;
+        UpdateValueText();
+    }
+
+    public void PressMinusBtn()
+    {
+        if (currentTime > 600) currentTime -= 60;
+        UpdateValueText();
+    }
+
+    public float GetCurrentTime()
+    {
+        return currentTime;
+    }
+
+    public void SetCurrentTime(float curTime)
+    {
+        currentTime = curTime;
+    }
+
+    // Horizontal Timer Progress Bar Code - 수평형 타이머 프로그레스바 코드
+    public void SetTimerBar()
+    {
+        timerProgressBar.maxValue = currentTime;
+        timerProgressBar.value = 0;
+    }
+
+    public void UpdateTimerBar()
+    {
+        timerProgressBar.value += 1;
     }
 }

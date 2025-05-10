@@ -75,7 +75,7 @@ public class GameMgr : MonoBehaviour
         TurnUI(flag);
 
         RemadeEgg();
-        ment.text = "Let's Hatch Some New Friends!";
+        ment.text = "Stay Focused";
     }
 
     public void ChngMainCamStatus(int status)
@@ -95,6 +95,8 @@ public class GameMgr : MonoBehaviour
 
         if (flag == 0)
         {
+            egg.SetActive(true); // permenant
+
             mainCam.transform.rotation = Quaternion.Euler(0, 0, 0);
             farmMgr.ClearMountain();
             farmMgr.ClearField();
@@ -104,12 +106,16 @@ public class GameMgr : MonoBehaviour
         }
         else if (flag == 1)
         {
+            egg.SetActive(false); // permenant
+
             mainCam.transform.rotation = Quaternion.Euler(55f, 0, 0);
             farmMgr.AnimalFieldSpawn();            
             ChngMainCamStatus(1);
         }
         else if (flag == 2)
         {
+            egg.SetActive(false); // permenant
+
             mainCam.transform.localRotation = Quaternion.identity;
             SetCameraForMountain();
             farmMgr.AnimalMountainSpawn();
@@ -219,7 +225,7 @@ public class GameMgr : MonoBehaviour
         mainCam.orthographic = false;
         mainCam.fieldOfView = 60;
         mainCam.clearFlags = CameraClearFlags.SolidColor;
-        mainCam.backgroundColor = new Color(0xEE / 255f, 0xF2 / 255f, 0xCE / 255f); // EEF2CE 색상 적용
+        mainCam.backgroundColor = new Color(200 / 255f, 219 / 255f, 174 / 255f); // EEF2CE 색상 적용
     }
 
     public void FieldPosScaling()
